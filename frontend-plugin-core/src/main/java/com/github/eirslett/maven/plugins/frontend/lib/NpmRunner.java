@@ -1,44 +1,31 @@
 package com.github.eirslett.maven.plugins.frontend.lib;
 
-import com.github.eirslett.maven.plugins.frontend.lib.ProxyConfig.Proxy;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface NpmRunner extends NodeTaskRunner {}
+public interface NpmRunner {
+    public void execute(String args) throws TaskRunnerException;
+}
 
 final class DefaultNpmRunner extends NodeTaskExecutor implements NpmRunner {
     static final String TASK_NAME = "npm";
+    static final String TASK_LOCATION = "/node/npm/bin/npm-cli.js";
 
-    public DefaultNpmRunner(NodeExecutorConfig config, ProxyConfig proxyConfig, String npmRegistryURL) {
-        super(config, TASK_NAME, config.getNpmPath().getAbsolutePath(), buildArguments(proxyConfig, npmRegistryURL));
+    public DefaultNpmRunner(Platform platform, File workingDirectory, ProxyConfig proxy) {
+        super(TASK_NAME, TASK_LOCATION, workingDirectory, platform, buildArguments(proxy));
     }
 
-    private static List<String> buildArguments(ProxyConfig proxyConfig, String npmRegistryURL) {
+    private static List<String> buildArguments(ProxyConfig proxy) {
         List<String> arguments = new ArrayList<String>();
-               
-        if(npmRegistryURL != null && !npmRegistryURL.isEmpty()){
-            arguments.add ("--registry=" + npmRegistryURL);
+        arguments.add("--color=false");
+        if (proxy != null) {
+            if(proxy.isSecure()){
+                arguments.add("--https-proxy=" + proxy.getUri().toString());
+            } else {
+                arguments.add("--proxy=" + proxy.getUri().toString());
+            }
         }
-
-        if(!proxyConfig.isEmpty()){
-            Proxy proxy = null;
-            if(npmRegistryURL != null && !npmRegistryURL.isEmpty()){
-                proxy = proxyConfig.getProxyForUrl(npmRegistryURL);
-            }
-
-            if(proxy == null){
-                proxy = proxyConfig.getSecureProxy();
-            }
-
-            if(proxy == null){
-                proxy = proxyConfig.getInsecureProxy();
-            }
-
-            arguments.add("--https-proxy=" + proxy.getUri().toString());
-            arguments.add("--proxy=" + proxy.getUri().toString());
-        }
-        
         return arguments;
     }
 }

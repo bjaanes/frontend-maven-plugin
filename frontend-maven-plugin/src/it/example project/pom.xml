@@ -23,9 +23,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
-                            <nodeVersion>v4.6.0</nodeVersion>
-                            <npmVersion>2.15.9</npmVersion>
+                            <nodeVersion>v0.10.30</nodeVersion>
+                            <npmVersion>1.4.21</npmVersion>
                         </configuration>
                     </execution>
 
@@ -39,16 +38,6 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution>
                     
                     <execution>
                         <id>bower install</id>
@@ -58,17 +47,7 @@
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>jspm install</id>
-                        <goals>
-                            <goal>jspm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>--version</arguments>
-                        </configuration>
-                    </execution>
+                    </execution>                    
 
                     <execution>
                         <id>grunt build</id>
@@ -77,19 +56,6 @@
                         </goals>
                         <configuration>
                             <arguments>--no-color</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>gulp build</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>gulp</goal>
-                        </goals>
-                        <configuration>
-                            <environmentVariables>
-                                <NODE_ENV>production</NODE_ENV>
-                            </environmentVariables>
                         </configuration>
                     </execution>
 

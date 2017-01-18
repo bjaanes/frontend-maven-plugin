@@ -30,8 +30,4 @@ final class Utils {
         }
         return s.toString();
     }
-
-    public static boolean isRelative(String path) {
-        return !path.startsWith("/") && !path.startsWith("file:") && !path.matches("^[a-zA-Z]:\\\\.*");
-    }
 }

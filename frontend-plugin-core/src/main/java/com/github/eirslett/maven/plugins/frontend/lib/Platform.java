@@ -1,15 +1,8 @@
 package com.github.eirslett.maven.plugins.frontend.lib;
 
-enum Architecture { x86, x64, ppc64le, arm64;
+enum Architecture { x86, x64;
     public static Architecture guess(){
-        String arch = System.getProperty("os.arch");
-        if (arch.equals("ppc64le")) {
-            return ppc64le;
-        } else if (arch.equals("aarch64")) {
-            return arm64;
-        } else {
-            return arch.contains("64") ? x64 : x86;
-        }
+        return System.getProperty("os.arch").contains("64") ? x64 : x86;
     }
 }
 
@@ -23,19 +16,11 @@ enum OS { Windows, Mac, Linux, SunOS;
                                 OS.Linux;
     }
 
-    public String getArchiveExtension(){
-        if(this == OS.Windows){
-          return "zip";
-        } else {
-          return "tar.gz";
-        }
-    }
-
     public String getCodename(){
         if(this == OS.Mac){
             return "darwin";
         } else if(this == OS.Windows){
-            return "win";
+            return "windows";
         } else if(this == OS.SunOS){
             return "sunos";
         } else {
@@ -59,10 +44,6 @@ class Platform {
         return new Platform(os,architecture);
     }
 
-    public String getArchiveExtension(){
-        return os.getArchiveExtension();
-    }
-
     public String getCodename(){
         return os.getCodename();
     }
@@ -75,35 +56,23 @@ class Platform {
         return os == OS.Mac;
     }
 
-    public String getLongNodeFilename(String nodeVersion, boolean archiveOnWindows) {
-        if(isWindows() && !archiveOnWindows){
+    public String getLongNodeFilename(String nodeVersion) {
+        if(isWindows()){
             return "node.exe";
         } else {
-            return "node-" + nodeVersion + "-" + this.getNodeClassifier();
+            return "node-" + nodeVersion + "-" + getCodename() + "-" + architecture.toString();
         }
     }
 
-    public String getNodeDownloadFilename(String nodeVersion, boolean archiveOnWindows) {
-        if(isWindows() && !archiveOnWindows) {
+    public String getNodeDownloadFilename(String nodeVersion) {
+        if(isWindows()) {
             if(architecture == Architecture.x64){
-                if (nodeVersion.startsWith("v0.")) {
-                    return nodeVersion+"/x64/node.exe";
-                } else {
-                    return nodeVersion+"/win-x64/node.exe";
-                }
+                return nodeVersion+"/x64/node.exe";
             } else {
-                if (nodeVersion.startsWith("v0.")) {
-                	return nodeVersion + "/node.exe";
-                } else {
-                    return nodeVersion+"/win-x86/node.exe";
-                }
+                return nodeVersion + "/node.exe";
             }
         } else {
-            return nodeVersion + "/" + getLongNodeFilename(nodeVersion, archiveOnWindows) + "." + os.getArchiveExtension();
+            return nodeVersion + "/" + getLongNodeFilename(nodeVersion) + ".tar.gz";
         }
-    }
-
-    public String getNodeClassifier() {
-        return this.getCodename() + "-" + this.architecture.name();
     }
 }

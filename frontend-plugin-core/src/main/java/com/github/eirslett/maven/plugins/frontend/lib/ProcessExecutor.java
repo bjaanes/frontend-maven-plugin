@@ -21,18 +21,14 @@ final class ProcessExecutionException extends Exception {
 
 final class ProcessExecutor {
     private final File workingDirectory;
-    private final List<String> localPaths;
     private final List<String> command;
     private final ProcessBuilder processBuilder;
     private final Platform platform;
-    private final Map<String, String> additionalEnvironment;
 
-    public ProcessExecutor(File workingDirectory, List<String> paths, List<String> command, Platform platform, Map<String, String> additionalEnvironment){
+    public ProcessExecutor(File workingDirectory, List<String> command, Platform platform){
         this.workingDirectory = workingDirectory;
-        this.localPaths = paths;
         this.command = command;
         this.platform = platform;
-        this.additionalEnvironment = additionalEnvironment;
 
         this.processBuilder = createProcessBuilder();
     }
@@ -89,18 +85,11 @@ final class ProcessExecutor {
                 }
             }
         }
-
-        StringBuilder pathBuilder = new StringBuilder();
-        if (pathVarValue != null) {
-            pathBuilder.append(pathVarValue).append(File.pathSeparator);
+        if (pathVarValue == null) {
+            environment.put(pathVarName, workingDirectory + File.separator + "node");
         }
-        for (String path : localPaths) {
-        	pathBuilder.insert(0, File.pathSeparator).insert(0, path);
-        }
-        environment.put(pathVarName, pathBuilder.toString());
-
-        if (additionalEnvironment != null) {
-            environment.putAll(additionalEnvironment);
+        else {
+            environment.put(pathVarName, workingDirectory + File.separator + "node" + File.pathSeparator + pathVarValue);
         }
         return pbuilder;
     }

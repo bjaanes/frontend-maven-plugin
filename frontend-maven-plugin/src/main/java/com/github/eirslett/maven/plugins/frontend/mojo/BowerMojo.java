@@ -1,19 +1,24 @@
 package com.github.eirslett.maven.plugins.frontend.mojo;
 
 import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.ProxyConfig;
 import com.github.eirslett.maven.plugins.frontend.lib.TaskRunnerException;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.settings.crypto.SettingsDecrypter;
 
-import java.util.Collections;
+import java.io.File;
 
 @Mojo(name = "bower", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
-public final class BowerMojo extends AbstractFrontendMojo {
+public final class BowerMojo extends AbstractMojo {
+
+    /**
+     * The base directory for running all Node commands. (Usually the directory that contains package.json)
+     */
+    @Parameter(defaultValue = "${basedir}", property = "workingDirectory", required = false)
+    private File workingDirectory;
 
     /**
      * Bower arguments. Default is "install".
@@ -27,33 +32,15 @@ public final class BowerMojo extends AbstractFrontendMojo {
     @Parameter(property = "skip.bower", defaultValue = "false")
     private Boolean skip;
 
-    @Parameter(property = "session", defaultValue = "${session}", readonly = true)
-    private MavenSession session;
-
-    @Parameter(property = "frontend.bower.bowerInheritsProxyConfigFromMaven", required = false, defaultValue = "true")
-    private boolean bowerInheritsProxyConfigFromMaven;
-
-    @Component(role = SettingsDecrypter.class)
-    private SettingsDecrypter decrypter;
-
     @Override
-    protected boolean skipExecution() {
-        return this.skip;
-    }
-
-    @Override
-    protected void execute(FrontendPluginFactory factory) throws TaskRunnerException {
-        ProxyConfig proxyConfig = getProxyConfig();
-        factory.getBowerRunner(proxyConfig).execute(arguments, environmentVariables);
-    }
-
-    private ProxyConfig getProxyConfig() {
-        if (bowerInheritsProxyConfigFromMaven) {
-            return MojoUtils.getProxyConfig(session, decrypter);
-        } else {
-            getLog().info("npm not inheriting proxy config from Maven");
-            return new ProxyConfig(Collections.<ProxyConfig.Proxy>emptyList());
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        if(!skip) {
+            try {
+                MojoUtils.setSLF4jLogger(getLog());
+                new FrontendPluginFactory(workingDirectory).getBowerRunner().execute(arguments);
+            } catch (TaskRunnerException e) {
+                throw new MojoFailureException("Failed to run task", e);
+            }
         }
     }
-
 }

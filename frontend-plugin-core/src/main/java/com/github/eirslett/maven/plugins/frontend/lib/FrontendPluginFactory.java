@@ -3,81 +3,47 @@ package com.github.eirslett.maven.plugins.frontend.lib;
 import java.io.File;
 
 public final class FrontendPluginFactory {
-    
     private static final Platform defaultPlatform = Platform.guess();
-    private static final String DEFAULT_CACHE_PATH = "cache";
-
     private final File workingDirectory;
-    private final File installDirectory;
-    private final CacheResolver cacheResolver;
+    private final ProxyConfig proxy;
 
-    public FrontendPluginFactory(File workingDirectory, File installDirectory){
-        this(workingDirectory, installDirectory, getDefaultCacheResolver(installDirectory));
+    public FrontendPluginFactory(File workingDirectory){
+        this(workingDirectory, null);
     }
-
-    public FrontendPluginFactory(File workingDirectory, File installDirectory, CacheResolver cacheResolver){
+    public FrontendPluginFactory(File workingDirectory, ProxyConfig proxy){
         this.workingDirectory = workingDirectory;
-        this.installDirectory = installDirectory;
-        this.cacheResolver = cacheResolver;
+        this.proxy = proxy;
     }
 
-    public NodeInstaller getNodeInstaller(ProxyConfig proxy) {
-        return new NodeInstaller(getInstallConfig(), new DefaultArchiveExtractor(), new DefaultFileDownloader(proxy));
-    }
-
-    public NPMInstaller getNPMInstaller(ProxyConfig proxy) {
-        return new NPMInstaller(getInstallConfig(), new DefaultArchiveExtractor(), new DefaultFileDownloader(proxy));
-    }
-
-    public YarnInstaller getYarnInstaller(ProxyConfig proxy) {
-        return new YarnInstaller(getInstallConfig(), new DefaultArchiveExtractor(), new DefaultFileDownloader(proxy));
+    public NodeAndNPMInstaller getNodeAndNPMInstaller(){
+        return new DefaultNodeAndNPMInstaller(
+                workingDirectory,
+                defaultPlatform,
+                new DefaultArchiveExtractor(),
+                new DefaultFileDownloader(proxy));
     }
     
-    public BowerRunner getBowerRunner(ProxyConfig proxy) {
-        return new DefaultBowerRunner(getExecutorConfig(), proxy);
+    public BowerRunner getBowerRunner() {
+        return new DefaultBowerRunner(defaultPlatform, workingDirectory);
     }    
 
-    public JspmRunner getJspmRunner() {
-        return new DefaultJspmRunner(getExecutorConfig());
-    }
-
-    public NpmRunner getNpmRunner(ProxyConfig proxy, String npmRegistryURL) {
-        return new DefaultNpmRunner(getExecutorConfig(), proxy, npmRegistryURL);
-    }
-
-    public YarnRunner getYarnRunner(ProxyConfig proxy, String npmRegistryURL) {
-        return new DefaultYarnRunner(new InstallYarnExecutorConfig(getInstallConfig()), proxy, npmRegistryURL);
+    public NpmRunner getNpmRunner() {
+        return new DefaultNpmRunner(defaultPlatform, workingDirectory, proxy);
     }
 
     public GruntRunner getGruntRunner(){
-        return new DefaultGruntRunner(getExecutorConfig());
+        return new DefaultGruntRunner(defaultPlatform, workingDirectory);
     }
 
     public EmberRunner getEmberRunner() {
-        return new DefaultEmberRunner(getExecutorConfig());
+        return new DefaultEmberRunner(defaultPlatform, workingDirectory);
     }
 
     public KarmaRunner getKarmaRunner(){
-        return new DefaultKarmaRunner(getExecutorConfig());
+        return new DefaultKarmaRunner(defaultPlatform, workingDirectory);
     }
 
     public GulpRunner getGulpRunner(){
-        return new DefaultGulpRunner(getExecutorConfig());
-    }
-
-    public WebpackRunner getWebpackRunner(){
-        return new DefaultWebpackRunner(getExecutorConfig());
-    }
-
-    private NodeExecutorConfig getExecutorConfig() {
-        return new InstallNodeExecutorConfig(getInstallConfig());
-    }
-
-    private InstallConfig getInstallConfig() {
-        return new DefaultInstallConfig(installDirectory, workingDirectory, cacheResolver, defaultPlatform);
-    }
-
-    private static final CacheResolver getDefaultCacheResolver(File root) {
-        return new DirectoryCacheResolver(new File(root, DEFAULT_CACHE_PATH));
+        return new DefaultGulpRunner(defaultPlatform, workingDirectory);
     }
 }
