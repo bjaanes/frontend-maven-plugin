@@ -1,7 +1,7 @@
-package com.github.eirslett.maven.plugins.frontend.mojo;
+package com.gjermundbjaanes.maven.plugins.frontend.mojo;
 
-import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.TaskRunnerException;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.FrontendPluginFactory;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.TaskRunnerException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

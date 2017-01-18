@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.mojo;
+package com.gjermundbjaanes.maven.plugins.frontend.mojo;
 
 import java.io.File;
 
@@ -12,8 +12,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.Scanner;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.TaskRunnerException;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.FrontendPluginFactory;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.TaskRunnerException;
 
 @Mojo(name="gulp", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public final class GulpMojo extends AbstractMojo {

@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.mojo;
+package com.gjermundbjaanes.maven.plugins.frontend.mojo;
 
 import java.io.File;
 
@@ -10,10 +10,10 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.InstallationException;
-import com.github.eirslett.maven.plugins.frontend.lib.NodeAndNPMInstaller;
-import com.github.eirslett.maven.plugins.frontend.lib.ProxyConfig;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.FrontendPluginFactory;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.InstallationException;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.NodeAndNPMInstaller;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.ProxyConfig;
 
 @Mojo(name="install-node-and-npm", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public final class InstallNodeAndNpmMojo extends AbstractMojo {

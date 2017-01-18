@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.lib;
+package com.gjermundbjaanes.maven.plugins.frontend.lib;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.github.eirslett.maven.plugins.frontend.lib.Utils.*;
+import static com.gjermundbjaanes.maven.plugins.frontend.lib.Utils.*;
 
 abstract class NodeTaskExecutor {
     private final Logger logger;

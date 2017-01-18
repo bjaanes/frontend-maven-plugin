@@ -1,10 +1,10 @@
-package com.github.eirslett.maven.plugins.frontend.mojo;
+package com.gjermundbjaanes.maven.plugins.frontend.mojo;
 
 import java.io.File;
 
-import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.ProxyConfig;
-import com.github.eirslett.maven.plugins.frontend.lib.TaskRunnerException;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.FrontendPluginFactory;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.ProxyConfig;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.TaskRunnerException;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -16,7 +16,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-import static com.github.eirslett.maven.plugins.frontend.mojo.MojoUtils.setSLF4jLogger;
+import static com.gjermundbjaanes.maven.plugins.frontend.mojo.MojoUtils.setSLF4jLogger;
 
 @Mojo(name="npm",  defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public final class NpmMojo extends AbstractMojo {

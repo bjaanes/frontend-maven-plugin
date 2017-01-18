@@ -7,7 +7,7 @@
         <version>7</version>
     </parent>
 
-    <groupId>com.github.eirslett</groupId>
+    <groupId>com.gjermundbjaanes</groupId>
     <artifactId>frontend-plugins</artifactId>
     <version>0.0.22</version>
     <packaging>pom</packaging>

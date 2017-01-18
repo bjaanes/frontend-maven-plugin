@@ -1,6 +1,6 @@
-package com.github.eirslett.maven.plugins.frontend.mojo;
+package com.gjermundbjaanes.maven.plugins.frontend.mojo;
 
-import com.github.eirslett.maven.plugins.frontend.lib.ProxyConfig;
+import com.gjermundbjaanes.maven.plugins.frontend.lib.ProxyConfig;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;

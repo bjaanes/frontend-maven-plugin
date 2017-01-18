@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.lib;
+package com.gjermundbjaanes.maven.plugins.frontend.lib;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.lib;
+package com.gjermundbjaanes.maven.plugins.frontend.lib;
 
 public class TaskRunnerException extends Exception {
     TaskRunnerException(String message) {

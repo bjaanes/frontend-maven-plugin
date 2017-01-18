@@ -1,4 +1,4 @@
-package com.github.eirslett.maven.plugins.frontend.lib;
+package com.gjermundbjaanes.maven.plugins.frontend.lib;
 
 public final class InstallationException extends Exception {
     InstallationException(String message){
